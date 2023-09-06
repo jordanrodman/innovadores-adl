@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [selected, setshoppingItem] = useState(false);
+  const [typeURL, setTypeURL]= useState("posts")
 
   useEffect(() => {
     console.log("onRender");
@@ -21,10 +22,10 @@ function App() {
   });
 
   useEffect(() => {
-    fetch(`https://jsonplaceholder.typicode.com/posts`)
+    fetch(`https://jsonplaceholder.typicode.com/${typeURL}`)
       .then((response) => response.json())
       .then((json) => console.log(json));
-  }, []);
+  }, [type]);
 
   const updateShoppingItem = (item) => {
     setshoppingItem(item);
@@ -94,8 +95,8 @@ function App() {
       <ShoppingArea mercado={mercado} updateShoppingItem={updateShoppingItem} />
       <ul>
         <li>
-          <button>Post</button>
-          <button>commentarios</button>
+          <button onClick={()=>setTypeURL("posts")}>Post</button>
+          <button onClick={()=>setTypeURL("comments")}>commentarios</button>
         </li>
       </ul>
     </>
