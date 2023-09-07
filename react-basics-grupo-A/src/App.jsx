@@ -1,10 +1,15 @@
 import "./App.css";
 import ShoppingArea from "./components/ShoppingArea/ShoppingArea";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 function App() {
   const [selected, setshoppingItem] = useState(false);
   const [typeURL, setTypeURL]= useState("posts")
+  const contadorRender = useRef(0);
+  const inputRef= useRef(null);
+  const [userName,setUserName]= useState("Río");
+  const estadoAnterior= useRef("");
+
 
   useEffect(() => {
     console.log("onRender");
@@ -25,7 +30,7 @@ function App() {
     fetch(`https://jsonplaceholder.typicode.com/${typeURL}`)
       .then((response) => response.json())
       .then((json) => console.log(json));
-  }, [type]);
+  }, []);
 
   const updateShoppingItem = (item) => {
     setshoppingItem(item);
@@ -82,10 +87,33 @@ function App() {
     window.addEventListener("resize", handleResize);
   });
 
+  useEffect(()=> {
+    contadorRender.current= contadorRender.current+1;
+   })
+
+   useEffect(()=>{
+
+    estadoAnterior.current= userName;
+  
+   }, [userName])
+
+  function irAlBoton() {
+    console.log(inputRef.current);
+    inputRef.current.focus();
+  }
+  
+
   return (
     <>
       <h1>Lista de componentes</h1>
       windowWidth: {windowWidth}
+      <h3> Hemos hecho {contadorRender.current} re renders </h3>
+      <div>
+        <input ref={inputRef} value={userName} onChange={(e)=> setUserName(e.target.value)} />
+        <button onClick={irAlBoton}> Ir al Input </button>
+      </div>
+      <h3> El username anterior es: {userName} </h3>
+
       {/* { !selected ? 
         <ShoppingArea 
           mercado={mercado}
